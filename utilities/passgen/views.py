@@ -36,7 +36,7 @@ class PassGenView(View):
                 characters.extend(lower_letters)
             temp = random.choices(characters, k=password_length)
             password = ''.join(temp)
-        return render(request, 'passgen/password.html', {'form': form, 'password': password})
+        return render(request, 'passgen/home.html', {'form': form, 'password': password})
 
 
 # class PassWordView(View):
