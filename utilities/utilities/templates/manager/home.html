@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Create New Password</h4>
+                <p class="card-category">Strong Password, Strong Human </p>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-error">{{ form.non_field_errors }}</div>
+                    {% for f in form %}
+                    <p><label class="form-check-label mx-3" for="{{ f.id_for_label }}">{{ f.label }}:</label>{{ f }}</p>
+                    <div class="form-error">{{ f.errors }}</div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-danger pull-right">Generate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if password %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-warning">
+                <h4 class="card-title">Here you go</h4>
+                <p class="card-category">Your new password:</p>
+            </div>
+
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input class="form-control mb-2" id="password" type="text" value="{{password}}"
+                           onkeyup="isGood(this.value)" style="font-size : 32px; height : 5rem;">
+                    <div class="input-group-append">
+                        <form method="POST" id="passForm" action="{% url 'add' %}">
+                            {% csrf_token %}
+                            <button type="submit" name="passwd" value="{{ password }}" form="passForm"
+                                    class="btn bg-transparent btn-outline-warning" style="height : 80px;"><span
+                                    class="material-icons"
+                                    style="font-size:35px;">add_circle</span></button>
+                        </form>
+                        <button class="btn bg-transparent btn-outline-danger" id="copyBtn"
+                                data-clipboard-target="createdPassword"
+                                data-container="body" data-toggle="popover" data-placement="top" data-content="Copied">
+                            <i class="fa fa-copy" style="font-size:30px;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<small class="help-block" id="password-text"></small>
+
+<script>
+  document.getElementById("copyBtn")
+    .onclick = function () {
+      let text = document.getElementById("password").value;
+      navigator.clipboard.writeText(text);
+    }
+
+</script>
+{% endif %}
+{% endblock content %}
