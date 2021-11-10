@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-
+{% load  widget_tweaks %}
+{% block title %} Create Password {% endblock title %}
 {% block content %}
-<h1>{{title}}</h1>
 
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -13,11 +13,51 @@
             <div class="card-body">
                 <form method="POST">
                     {% csrf_token %}
-                    <div class="form-error">{{ form.non_field_errors }}</div>
-                    {% for f in form %}
-                    <p><label class="form-check-label mx-3" for="{{ f.id_for_label }}">{{ f.label }}:</label>{{ f }}</p>
-                    <div class="form-error">{{ f.errors }}</div>
-                    {% endfor %}
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="form-group mt-5">
+                                <label for="{{form.length.id_for_label}}" class="text-warning">{{form.length.label}}</label>
+                                {% render_field form.length class+="selectpicker form-control form-select my-3" data-style="btn btn-danger"%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="form-check">
+                                <label class="form-check-label mx-3">
+                                    {% render_field form.has_letters checked="checked" class+="form-check-input"%}
+                                    <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                                    <p class="text-warning">{{form.has_letters.label}}</p>
+                                </label>
+
+                                <label class="form-check-label mx-3">
+                                    {% render_field form.has_uppercase class+="form-check-input" %}
+                                    <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                                    <p class="text-warning">{{form.has_uppercase.label}}</p>
+                                </label>
+
+                                <label class="form-check-label mx-3">
+                                    {% render_field form.has_punctuation class+="form-check-input" %}
+                                    <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                                    <p class="text-warning">{{form.has_punctuation.label}}</p>
+                                </label>
+
+                                <label class="form-check-label mx-3">
+                                    {% render_field form.has_numbers class+="form-check-input" %}
+                                    <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                                    <p class="text-warning">{{form.has_numbers.label}}</p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-danger pull-right">Generate</button>
                 </form>
             </div>
@@ -64,6 +104,8 @@
       let text = document.getElementById("password").value;
       navigator.clipboard.writeText(text);
     }
+
+
 
 </script>
 {% endif %}
