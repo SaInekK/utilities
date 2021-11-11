@@ -40,8 +40,8 @@ class CreatePasswordForm(forms.ModelForm):
 class GeneratePasswordForm(forms.Form):
     CHOICES = ((i, str(i)) for i in range(8, 33, 2))
 
-    length = forms.CharField(label="Password Length", widget=forms.Select(choices=CHOICES))
+    length = forms.CharField(label="Password length", widget=forms.Select(choices=CHOICES))
     has_letters = forms.BooleanField(label="Letters", widget=forms.CheckboxInput, required=True)
-    has_uppercase = forms.BooleanField(label="Mixed Case", widget=forms.CheckboxInput, required=False)
+    has_uppercase = forms.BooleanField(label="Uppercase", widget=forms.CheckboxInput, required=False)
     has_punctuation = forms.BooleanField(label="Punctuation", widget=forms.CheckboxInput, required=False)
     has_numbers = forms.BooleanField(label="Numbers", widget=forms.CheckboxInput, required=False)

@@ -1,0 +1,73 @@
+{% load static %}
+{% load url_to_title %}
+<div class="sidebar" data-color="danger" data-background-color="black"
+  data-image=" {% static 'assets/img/sidebar-1.jpg' %}">
+  <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+            Tip 2: you can also add an image using data-image tag
+        -->
+  <div class="logo">
+    <a href="{% url 'home' %}" class="simple-text logo-normal">
+      passManager
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+      <li class="nav-item {% if request.resolver_match.url_name == 'control_panel' %}active{% endif %}  ">
+        <a class="nav-link" href="{% url 'control_panel' %}">
+          <i class="material-icons">dashboard</i>
+          <p>Control panel</p>
+        </a>
+      </li>
+      <li class="nav-item {% if request.resolver_match.url_name == 'add_password' %}active{% endif %}  ">
+        <a class="nav-link" href="{% url 'add' %}">
+          <i class="material-icons">exposure_plus_1</i>
+          <p>Save password</p>
+        </a>
+      </li>
+      <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %} ">
+        <a class="nav-link" href="{% url 'home' %}">
+          <i class="material-icons">add_circle</i>
+          <p>Generate password</p>
+        </a>
+      </li>
+    </ul>
+    <!-- your sidebar here -->
+    </ul>
+  </div>
+</div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " >
+  <div class="container-fluid">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-danger">
+        {% if request.resolver_match.url_name == "control_panel" %}
+          <li class="breadcrumb-item active text-black">Control panel</li>
+        {% else %}
+          <li class="breadcrumb-item"><a href="{% url 'control_panel' %}"> Control panel</a></li>
+          <li class="breadcrumb-item active text-black">{{ request.resolver_match.url_name|url_to_title }}</li>
+      {% endif %}
+      </ol>
+    </nav>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
+      aria-expanded="false" aria-label="Toggle navigation" >
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end">
+      <form action="{% url 'search' %}" class="navbar-form">
+        <div class="input-group no-border">
+          <input type="text" name="q" class="form-control" placeholder="Search..." size="50">
+          <button type="submit" class="btn btn-default btn-round btn-just-icon">
+            <i class="material-icons">search</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->

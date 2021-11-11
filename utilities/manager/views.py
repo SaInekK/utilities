@@ -1,3 +1,7 @@
+import datetime
+
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,9 +9,14 @@ import string
 from django.shortcuts import render
 from django.views import View
 import random
+
+from django.views.generic import DetailView
+
 from .forms import *
 from django.contrib import messages
 from django.utils import timezone
+
+
 # Create your views here.
 
 
@@ -51,13 +60,13 @@ class AddPassView(View):
         passwd = request.POST.get('passwd')
         kwargs['passwd'] = passwd
         if form.is_valid():
-            #get fields
+            # get fields
             password = form.cleaned_data.get('password')
             retired_date = form.cleaned_data.get('retired_date')
             used_for_website = form.cleaned_data.get('used_for_website')
             description = form.cleaned_data.get('description')
 
-            #Check if there is a same password
+            # Check if there is a same password
             if PasswordModel.objects.filter(password=password):
                 messages.warning(request, f"The password is already used on a platform")
                 kwargs['form'] = CreatePasswordForm()
@@ -75,3 +84,66 @@ class AddPassView(View):
         else:
             kwargs['form'] = CreatePasswordForm()
         return render(request, "manager/add_password.html", kwargs)
+
+
+class SearchPassView(View):
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q')
+        if not query:
+            query = ""
+        pass_obj = PasswordModel.objects.filter(
+            Q(used_for_website__icontains=query) |
+            Q(description__icontains=query) |
+            Q(password__icontains=query)).order_by("retired_date")
+        p = Paginator(pass_obj, 8)
+        page_number = request.GET.get('page')
+        # try:
+        page_obj = p.get_page(page_number)
+        '''except PageNotAnInteger:
+            page_obj = p.page(1)
+        except EmptyPage:
+            page_obj = p.page(p.num_pages)'''
+
+        kwargs['page_obj'] = page_obj
+
+        return render(request, "manager/search_password.html", kwargs)
+
+
+class ControlPanelView(View):
+    model = PasswordModel
+
+    def get(self, request, *args, **kwargs):
+        qs = PasswordModel.objects.all().order_by('-id')
+        p = Paginator(qs, 5)
+        page_number = self.request.GET.get('page')
+        try:
+            page_obj = p.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = p.page(1)
+        except EmptyPage:
+            # if page is empty return last page
+            page_obj = p.page(p.num_pages)
+        now = timezone.now()
+        end_date = now + datetime.timedelta(days=15)
+        closest_date = PasswordModel.objects.filter(retired_date__gte=now).order_by('retired_date').first()
+        notification_qs = PasswordModel.objects.filter(retired_date__range=[now, end_date])
+        # print(notification_qs)
+        last_item = PasswordModel.objects.last()
+        kwargs = kwargs | {
+            'last_item': last_item,
+            'closest_date': closest_date,
+            'records': qs.count(),
+            'page_obj': page_obj,
+            'notification': notification_qs,
+            'notification_record': notification_qs.count(),
+        }
+        return render(request, "manager/control_panel.html", kwargs)
+
+
+class PasswordDetailView(DetailView):
+    model = PasswordModel
+    template_name = "manager/password_detail.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context | kwargs
