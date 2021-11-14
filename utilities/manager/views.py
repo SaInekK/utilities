@@ -7,10 +7,11 @@ from django.shortcuts import render
 # Create your views here.
 import string
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
 import random
 
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView, DeleteView
 
 from .forms import *
 from django.contrib import messages
@@ -66,12 +67,11 @@ class AddPassView(View):
             used_for_website = form.cleaned_data.get('used_for_website')
             description = form.cleaned_data.get('description')
 
-            # Check if there is a same password
+            # Check if there is the same password
             if PasswordModel.objects.filter(password=password):
                 messages.warning(request, f"The password is already used on a platform")
                 kwargs['form'] = CreatePasswordForm()
             else:
-                # save them into database
                 obj = PasswordModel.objects.create(
                     password=password,
                     created_date=timezone.now(),
@@ -147,3 +147,29 @@ class PasswordDetailView(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         return context | kwargs
+
+
+class PasswordUpdateView(UpdateView):
+    model = PasswordModel
+    fields = [
+        "password", "used_for_website", "retired_date", "description"
+    ]
+    template_name = "manager/update_password.html"
+    success_url = reverse_lazy("control_panel")
+
+    def form_valid(self, form):
+        messages.success(self.request, f"The record was updated!")
+        return super(PasswordUpdateView, self).form_valid(form)
+
+
+class PasswordDeleteView(DeleteView):
+    model = PasswordModel
+    template_name = "manager/delete_password.html"
+    success_url = reverse_lazy("control_panel")
+    success_message = "The record was removed successfully!"
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        data = super(PasswordDeleteView, self).delete(request, *args, **kwargs)
+        messages.warning(self.request, self.success_message % obj.__dict__)
+        return data

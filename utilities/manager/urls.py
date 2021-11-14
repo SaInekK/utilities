@@ -9,5 +9,7 @@ urlpatterns = [
     path('control_panel/', ControlPanelView.as_view(), name='control_panel'),
     path('search/', SearchPassView.as_view(), name='search'),
     path('<pk>/', PasswordDetailView.as_view(), name="detail"),
+    path('update/<pk>/', PasswordUpdateView.as_view(), name="update"),
+    path('delete/<pk>/', PasswordDeleteView.as_view(), name="delete"),
     # path('password', PassWordView.as_view(), name='password')
 ]
