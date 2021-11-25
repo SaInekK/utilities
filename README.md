@@ -1,1 +1,1 @@
-# Password generator and (later) manager
+# Django Password generator and manager
