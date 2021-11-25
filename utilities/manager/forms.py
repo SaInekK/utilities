@@ -3,12 +3,12 @@ from django.forms import fields, widgets
 
 from .models import PasswordModel
 
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
 
 class CreatePasswordForm(forms.ModelForm):
-
         class Meta:
             model = PasswordModel
             fields = ['password', 'used_for_website', 'retired_date', 'description']
