@@ -1,6 +1,9 @@
 from django import forms
 from django.forms import fields, widgets
-
+from django.contrib.auth import password_validation
+from django.contrib.auth.models import User
+from django import forms
+from django.core.exceptions import ValidationError
 from .models import PasswordModel
 
 
@@ -9,32 +12,13 @@ class DateInput(forms.DateInput):
 
 
 class CreatePasswordForm(forms.ModelForm):
-        class Meta:
-            model = PasswordModel
-            fields = ['password', 'used_for_website', 'retired_date', 'description']
-            widgets = {
-                'retired_date': DateInput(format='%d%m%Y'),
-                'password': forms.PasswordInput(attrs={'autocomplete': 'off', 'data-toggle': 'password'})
-            }
-
-    # retired_date = forms.DateField()
-    # password = forms.CharField()
-    # used_for_website = forms.CharField()
-    # description = forms.CharField()
-    #
-    # class Meta:
-    #     model = PasswordModel
-    #     fields = ('password', 'used_for_website', 'retired_date', 'description')
-    #     widgets = {
-    #         'retired_date': forms.DateInput(format='%d%m%Y'),
-    #         'password': forms.PasswordInput(attrs={'autocomplete': 'off', 'data-toggle': 'password'})
-    #     }
-    #     labels = {
-    #         "retired_date": "Retired date",
-    #         "password": "Password",
-    #         "used_for_website": "Used for website",
-    #         "description": "Description",
-    #     }
+    class Meta:
+        model = PasswordModel
+        fields = ['password', 'used_for_website', 'retired_date', 'description']
+        widgets = {
+            'retired_date': DateInput(format='%d%m%Y'),
+            'password': forms.PasswordInput(attrs={'autocomplete': 'off', 'data-toggle': 'password'})
+        }
 
 
 class GeneratePasswordForm(forms.Form):

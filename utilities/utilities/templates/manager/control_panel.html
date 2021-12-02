@@ -106,7 +106,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
-                        <thead class=" text-primary">
+                        <thead class="text-primary">
                             <th>
                                 Password
                             </th>
@@ -157,15 +157,15 @@
                                     </div>
                                 </td>
                                 <td class="td-actions text-right">
-                                    <a href="/{{object.id}}/" rel="tooltip" title="Details"
+                                    <a href="{% url 'details' object.id %}" rel="tooltip" title="Details"
                                         class="btn btn-white btn-link btn-sm">
                                         <i class="material-icons">remove_red_eye</i>
                                     </a>
-                                    <a href="/update/{{object.id}}/" rel="tooltip" title="Edit Password"
+                                    <a href="{% url 'update' object.id %}" rel="tooltip" title="Edit Password"
                                         class="btn btn-white btn-link btn-sm">
                                         <i class="material-icons">edit</i>
                                     </a>
-                                    <a href="/delete/{{object.id}}/" rel="tooltip" title="Delete Password"
+                                    <a href="{% url 'delete' object.id %}" rel="tooltip" title="Delete Password"
                                         class="btn btn-white btn-link btn-sm">
                                         <i class="material-icons">close</i>
                                     </a>

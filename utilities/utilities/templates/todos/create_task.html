@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load  widget_tweaks %}
+{% block title %} To-do {{ task.title }} {% endblock title %}
+{% block content %}
+{% include 'header.html' %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Create new task</h4>
+<!--                <p class="card-category">Fill these fields</p>-->
+            </div>
+            <div class="card-body">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+                                <div class="input-group-append">
+                                    <label class="bmd-label-floating">{{form.title.label}}</label>
+                                    {% render_field form.title class="form-control" %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">{{form.description.label}}</label>
+                                    {% render_field form.description class="form-control" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-danger pull-right" value="Submit">
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

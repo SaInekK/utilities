@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load  widget_tweaks %}
+{% block title %} To-do {{ task.title }} {% endblock title %}
+{% block content %}
+{% include 'header.html' %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h6><span class="tim-note"></span>title:</h6>
+                <h4 class="card-category">{{ task.title }}</h4>
+            </div>
+            <div class="card-body">
+                <h6><span class="tim-note"></span>description:</h6>
+                <h4>{{ task.description }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

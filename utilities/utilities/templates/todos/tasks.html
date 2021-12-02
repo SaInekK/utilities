@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load  widget_tweaks %}
+{% block title %} To-do app {% endblock title %}
+{% block content %}
+{% include 'header.html' %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form class="navbar-form">
+              <span class="bmd-form-group"><div class="input-group no-border">
+                <input type="text" value="{{ search_input }}" class="form-control" name="search-area">
+                <button type="submit" class="btn btn-default btn-round btn-just-icon">
+                  <i class="material-icons">search</i>
+                  <div class="ripple-container"></div>
+                </button>
+              </div></span>
+            </form>
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <span class="nav-tabs-title"><h4>Your tasks:</h4></span>
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <div class="ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link primary active" href="{% url 'task_create' %}">
+                                        <i class="material-icons">add</i> Add
+                                        <div class="ripple-container"></div>
+                                        <div class="ripple-container"></div>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-warning">
+                        <th>ID</th>
+                        <th>Task title</th>
+                        <th class="text-right">Actions</th>
+                        </thead>
+                        <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <td>{{ task.pk }}</td>
+                            <td>{{ task.title }}</td>
+                            <td class="td-actions text-right">
+                                <a href="{% url 'task_detail' task.pk %}" rel="tooltip"
+                                   title="Details"
+                                   class="btn btn-white btn-link btn-sm">
+                                    <i class="material-icons">remove_red_eye</i></a>
+                                <a href="{% url 'task_update' task.pk %}" rel="tooltip" title="Edit"
+                                   class="btn btn-white btn-link btn-sm">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                                <a href="{% url 'task_delete' task.pk %}" rel="tooltip" title="Delete Password"
+                                   class="btn btn-white btn-link btn-sm">
+                                    <i class="material-icons">close</i></a>
+                        </tr>
+                        {% empty %}
+                        <h3>Tasks empty</h3>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
