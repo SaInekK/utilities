@@ -7,7 +7,7 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header card-header-danger">
-                <h4 class="card-title">Create new task</h4>
+                <h4 class="card-title">Update task</h4>
                 <!--                <p class="card-category">Fill these fields</p>-->
             </div>
             <div class="card-body">
@@ -16,10 +16,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-
                                 <div class="input-group-append">
                                     <label class="bmd-label-floating">{{form.title.label}}</label>
-                                    {% render_field form.title class="form-control" %}
+                                    {% render_field form.title class="form-control" value=request.title %}
                                 </div>
 
                             </div>
@@ -45,7 +44,19 @@
                         </div>
                     </div>
 
-
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <label class="form-check-label mx-3">
+                                    {% render_field form.completed class+="form-check-input" %}
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                    <p class="text-warning">{{ form.completed.label }}</p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <input type="submit" class="btn btn-danger pull-right" value="Submit">
                     <div class="clearfix"></div>
                 </form>

@@ -9,6 +9,7 @@ class TaskModel(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to='images/%Y/%m/%d/', null=True, blank=True)
     completed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 

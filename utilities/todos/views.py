@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import request
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+
+from django.contrib import messages
 
 from .models import TaskModel
 
@@ -16,7 +19,7 @@ class TaskListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user)
-
+        context['incomplete_tasks'] = context['tasks'].filter(completed=False).count()
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
             context['tasks'] = context['tasks'].filter(
@@ -36,7 +39,7 @@ class CreateTaskView(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = TaskModel
     template_name = 'todos/create_task.html'
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'image', 'completed']
     success_url = reverse_lazy('tasks')
 
     def form_valid(self, form):
@@ -44,12 +47,16 @@ class CreateTaskView(LoginRequiredMixin, CreateView):
         return super(CreateTaskView, self).form_valid(form)
 
 
-class UpdateTaskView(LoginRequiredMixin, CreateView):
+class UpdateTaskView(LoginRequiredMixin, UpdateView):
     login_url = "login"
     model = TaskModel
-    template_name = 'todos/create_task.html'
-    fields = ['title', 'description', 'completed']
+    template_name = 'todos/update_task.html'
+    fields = ['title', 'description', 'image', 'completed']
     success_url = reverse_lazy('tasks')
+
+    # def form_valid(self, form):
+    #     messages.success(self.request, f"The record was updated!")
+    #     return super(UpdateTaskView, self).form_valid(form)
 
 
 class DeleteTaskView(LoginRequiredMixin, DeleteView):

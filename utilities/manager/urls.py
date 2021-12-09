@@ -15,4 +15,6 @@ urlpatterns = [
     path('<pk>/', PasswordDetailView.as_view(), name="details"),
     path('update/<pk>/', PasswordUpdateView.as_view(), name="update"),
     path('delete/<pk>/', PasswordDeleteView.as_view(), name="delete"),
+
 ]
+

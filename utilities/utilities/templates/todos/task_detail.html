@@ -13,6 +13,12 @@
             <div class="card-body">
                 <h6><span class="tim-note"></span>description:</h6>
                 <h4>{{ task.description }}</h4>
+                {% if task.image %}
+                <h6><span class="tim-note"></span>attached image:</h6>
+                <div>
+                <p><img class="rounded img-fluid" src="{{ task.image.url }}"></p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

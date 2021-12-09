@@ -14,7 +14,7 @@ from django.urls import reverse_lazy
 from django.views import View
 import random
 
-from django.views.generic import DetailView, UpdateView, DeleteView, FormView
+from django.views.generic import DetailView, UpdateView, DeleteView, FormView, ListView
 
 from .forms import *
 from django.contrib import messages
@@ -144,7 +144,7 @@ class SearchPassView(LoginRequiredMixin, View):
         return render(request, "manager/search_password.html", kwargs)
 
 
-class ControlPanelView(LoginRequiredMixin, View):
+class ControlPanelView(LoginRequiredMixin, ListView):
     login_url = "login"
     model = PasswordModel
 
@@ -161,17 +161,21 @@ class ControlPanelView(LoginRequiredMixin, View):
             page_obj = p.page(p.num_pages)
         now = timezone.now()
         end_date = now + datetime.timedelta(days=15)
-        closest_date = PasswordModel.objects.filter(retired_date__gte=now).order_by('retired_date').first()
-        notification_qs = PasswordModel.objects.filter(retired_date__range=[now, end_date])
-        # print(notification_qs)
+        closest_date = PasswordModel.objects.filter(
+            Q(user=self.request.user) &
+            Q(retired_date__gte=now)).order_by('retired_date').first()
+        notifications = PasswordModel.objects.filter(
+            Q(user=self.request.user) &
+            Q(retired_date__range=[now, end_date]))
+
         last_item = PasswordModel.objects.last()
         kwargs = kwargs | {
             'last_item': last_item,
             'closest_date': closest_date,
             'records': qs.count(),
             'page_obj': page_obj,
-            'notification': notification_qs,
-            'notification_record': notification_qs.count(),
+            'notifications': notifications,
+            'notifications_count': notifications.count(),
         }
         return render(request, "manager/control_panel.html", kwargs)
 

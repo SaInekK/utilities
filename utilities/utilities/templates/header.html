@@ -39,7 +39,6 @@
                 </a>
             </li>
         </ul>
-        <!-- your sidebar here -->
         </ul>
     </div>
 </div>
@@ -74,20 +73,20 @@
                 </div>
             </form>
             <ul class="navbar-nav">
-                {% if notification %}
+                {% if notifications %}
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
-                        <span class="notification">{{notification_record}}</span>
+                        <span class="notification">{{notifications_count}}</span>
                         <p class="d-lg-none d-md-block">
                             Some Actions
                         </p>
                     </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            {% for upcoming in notification %}
-                            <a class="dropdown-item" href="{% url 'update' upcoming.id %}">{{upcoming.password}} will be
+                            {% for notification in notifications %}
+                            <a class="dropdown-item" href="{% url 'update' notification.id %}">{{notification.password}} will be
                                 retired.</a>
                             {% endfor %}
                         </div>

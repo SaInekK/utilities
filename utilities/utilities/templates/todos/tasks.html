@@ -18,7 +18,7 @@
             <div class="card-header card-header-danger">
                 <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                        <span class="nav-tabs-title"><h4>Your tasks:</h4></span>
+                        <span class="nav-tabs-title"><h4>You have {{ incomplete_tasks }} incomplete tasks</h4></span>
                         <ul class="nav nav-tabs" data-tabs="tabs">
                             <div class="ml-auto">
                                 <li class="nav-item">
@@ -37,15 +37,27 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="text-warning">
-                        <th>ID</th>
+                        <th>Completed</th>
                         <th>Task title</th>
                         <th class="text-right">Actions</th>
                         </thead>
                         <tbody>
                         {% for task in tasks %}
                         <tr>
-                            <td>{{ task.pk }}</td>
-                            <td>{{ task.title }}</td>
+                            {% if task.completed %}
+                            <td><span class="material-icons">done</span></td>
+                            {% else %}
+                            <td></td>
+<!--                            <td>{{ task.pk }}</td>-->
+                            {% endif %}
+                            {% if task.completed %}
+
+                                <td><a href="{% url 'task_detail' task.pk %}" rel="tooltip" title="Details"
+                                   class=""><i><s>{{ task.title }}</s></i></a></td>
+                            {% else %}
+                                <td><a href="{% url 'task_detail' task.pk %}" rel="tooltip" title="Details"
+                                   class="">{{ task.title }}</a></td>
+                            {% endif %}
                             <td class="td-actions text-right">
                                 <a href="{% url 'task_detail' task.pk %}" rel="tooltip"
                                    title="Details"
