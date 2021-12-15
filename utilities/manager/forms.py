@@ -29,3 +29,10 @@ class GeneratePasswordForm(forms.Form):
     has_uppercase = forms.BooleanField(label="Uppercase", widget=forms.CheckboxInput, required=False)
     has_punctuation = forms.BooleanField(label="Punctuation", widget=forms.CheckboxInput, required=False)
     has_numbers = forms.BooleanField(label="Numbers", widget=forms.CheckboxInput, required=False)
+
+
+class TranslitForm(forms.Form):
+    CHOICES = ((0, 'lat to ru'), (1, 'ru to lat'))
+
+    option = forms.CharField(label="Option", widget=forms.Select(choices=CHOICES), required=True)
+    text = forms.CharField(label='Text', widget=forms.Textarea, required=True)

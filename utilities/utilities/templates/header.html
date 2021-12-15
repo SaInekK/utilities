@@ -38,6 +38,12 @@
                     <p>To-do app</p>
                 </a>
             </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'translit' %}active{% endif %} ">
+                <a class="nav-link" href="{% url 'translit' %}">
+                    <i class="material-icons">translate</i>
+                    <p>Translit translator</p>
+                </a>
+            </li>
         </ul>
         </ul>
     </div>

@@ -16,7 +16,8 @@
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="form-group mt-5">
-                                <label for="{{form.length.id_for_label}}" class="text-warning">{{form.length.label}}</label>
+                                <label for="{{form.length.id_for_label}}"
+                                       class="text-warning">{{form.length.label}}</label>
                                 {% render_field form.length class+="selectpicker form-control form-select my-3" data-style="btn btn-danger"%}
                             </div>
                         </div>
@@ -104,6 +105,7 @@
       let text = document.getElementById("password").value;
       navigator.clipboard.writeText(text);
     }
+
 
 
 

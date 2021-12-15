@@ -18,3 +18,5 @@ class TaskModel(models.Model):
 
     class Meta:
         ordering = ['completed']
+
+

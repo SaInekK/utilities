@@ -1,5 +1,6 @@
 import datetime
 
+import transliterate
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -216,3 +217,19 @@ class PasswordDeleteView(LoginRequiredMixin, DeleteView):
         data = super(PasswordDeleteView, self).delete(request, *args, **kwargs)
         messages.warning(self.request, self.success_message % obj.__dict__)
         return data
+
+
+class TranslitView(LoginRequiredMixin, FormView):
+    template_name = 'manager/translit.html'
+    login_url = "login"
+
+    def get(self, request, *args, **kwargs):
+        text = request.GET.get('text') or ''
+        kwargs['form'] = TranslitForm()
+        option = self.request.GET.get('option')
+        if option:
+            if option == '0':
+                kwargs['translated'] = transliterate.translit(text, 'ru')
+            if option == '1':
+                kwargs['translated'] = transliterate.translit(text, reversed=True)
+        return render(request, "manager/translit.html", kwargs)

@@ -12,9 +12,9 @@ urlpatterns = [
     path('add_password/', AddPassView.as_view(), name='add'),
     path('control_panel/', ControlPanelView.as_view(), name='control_panel'),
     path('search/', SearchPassView.as_view(), name='search'),
+    path('translit/', TranslitView.as_view(), name="translit"),
     path('<pk>/', PasswordDetailView.as_view(), name="details"),
     path('update/<pk>/', PasswordUpdateView.as_view(), name="update"),
     path('delete/<pk>/', PasswordDeleteView.as_view(), name="delete"),
-
 ]
 

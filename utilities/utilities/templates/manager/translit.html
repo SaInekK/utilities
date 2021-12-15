@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load  widget_tweaks %}
+{% block title %} Translit translator {% endblock title %}
+{% block content %}
+{% include 'header.html' %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <span class="nav-tabs-title"><h4>Translate to/from stranslit here</h4></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="navbar-form">
+                    {% csrf_token %}
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="form-group mt-5">
+                                <label class="text-warning">{{form.option.label}}</label>
+                                {% render_field form.option class+="selectpicker form-control form-select my-3" data-style="btn btn-danger"%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group no-border">
+                                <label class="text-warning">{{form.text.label}}</label>
+                                {% render_field form.text class+="form-control form-select my-3" data-style="btn btn-danger"%}
+                        <button type="submit" class="btn btn-default btn-round btn-just-icon">
+                            <i class="material-icons">search</i>
+                            <div class="ripple-container"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {% if translated %}
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Translated:</h4>
+                <p class="card-category">{{ translated }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
