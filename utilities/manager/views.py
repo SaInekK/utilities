@@ -228,8 +228,8 @@ class TranslitView(LoginRequiredMixin, FormView):
         kwargs['form'] = TranslitForm()
         option = self.request.GET.get('option')
         if option:
-            if option == '0':
+            if option == 'lat to ru':
                 kwargs['translated'] = transliterate.translit(text, 'ru')
-            if option == '1':
+            if option == 'ru to lat':
                 kwargs['translated'] = transliterate.translit(text, reversed=True)
         return render(request, "manager/translit.html", kwargs)

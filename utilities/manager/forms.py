@@ -32,7 +32,7 @@ class GeneratePasswordForm(forms.Form):
 
 
 class TranslitForm(forms.Form):
-    CHOICES = ((0, 'lat to ru'), (1, 'ru to lat'))
+    CHOICES = (('lat to ru', 'lat to ru'), ('ru to lat', 'ru to lat'))
 
     option = forms.CharField(label="Option", widget=forms.Select(choices=CHOICES), required=True)
     text = forms.CharField(label='Text', widget=forms.Textarea, required=True)
